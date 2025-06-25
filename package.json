@@ -8,6 +8,8 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^6.10.1",
+    "@prisma/client": "^6.10.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.5.0",
@@ -21,6 +23,7 @@
     "@eslint/markdown": "^6.5.0",
     "eslint": "^9.29.0",
     "globals": "^16.2.0",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "prisma": "^6.10.1"
   }
 }
