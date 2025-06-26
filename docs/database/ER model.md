@@ -1,6 +1,4 @@
-# Convergence des Luttes – Database Relationship Guide
-
-## ER Diagrams
+# ER Diagrams
 
 ### MVP
 
