@@ -60,3 +60,15 @@ typings/
 
 # next.js build output
 .next
+
+#  Prisma
+prisma/generated/      # client output (re-generated on prisma generate)
+prisma/dev.db          # local SQLite database
+*.db-journal
+*.db-wal
+*.db-shm
+
+/generated/prisma
+
+# Archive
+/archive/
