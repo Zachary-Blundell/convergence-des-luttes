@@ -67,6 +67,7 @@ prisma/dev.db          # local SQLite database
 *.db-journal
 *.db-wal
 *.db-shm
+*.db
 
 /generated/prisma
 
