@@ -7,6 +7,9 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
+  "prisma": {
+    "seed": "node --experimental-modules prisma/seed.js"
+  },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^6.10.1",
     "@prisma/client": "^6.10.1",
