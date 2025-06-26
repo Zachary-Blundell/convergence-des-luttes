@@ -34,24 +34,24 @@ CREATE TABLE "Article" (
 );
 
 -- CreateTable
-CREATE TABLE "Organiser" (
+CREATE TABLE "Organizer" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
-    "role" TEXT NOT NULL DEFAULT 'ORGANISER',
+    "role" TEXT NOT NULL DEFAULT 'ORGANIZER',
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "associationId" TEXT NOT NULL,
-    CONSTRAINT "Organiser_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Organizer_associationId_fkey" FOREIGN KEY ("associationId") REFERENCES "Association" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "RefreshToken" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "tokenHash" TEXT NOT NULL,
-    "organiserId" TEXT NOT NULL,
+    "organizerId" TEXT NOT NULL,
     "expiresAt" DATETIME NOT NULL,
     "revoked" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "RefreshToken_organiserId_fkey" FOREIGN KEY ("organiserId") REFERENCES "Organiser" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "RefreshToken_organizerId_fkey" FOREIGN KEY ("organizerId") REFERENCES "Organizer" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -70,13 +70,13 @@ CREATE UNIQUE INDEX "Article_slug_key" ON "Article"("slug");
 CREATE INDEX "Article_associationId_idx" ON "Article"("associationId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Organiser_email_key" ON "Organiser"("email");
+CREATE UNIQUE INDEX "Organizer_email_key" ON "Organizer"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Organiser_associationId_key" ON "Organiser"("associationId");
+CREATE UNIQUE INDEX "Organizer_associationId_key" ON "Organizer"("associationId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RefreshToken_tokenHash_key" ON "RefreshToken"("tokenHash");
 
 -- CreateIndex
-CREATE INDEX "RefreshToken_organiserId_idx" ON "RefreshToken"("organiserId");
+CREATE INDEX "RefreshToken_organizerId_idx" ON "RefreshToken"("organizerId");
