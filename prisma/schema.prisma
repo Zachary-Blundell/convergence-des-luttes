@@ -1,10 +1,9 @@
 // =======================================================
-//  Prisma schema  •  SQLite
+//  Prisma schema  •  SQLite   (2025-07-04)
 // =======================================================
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
-  // output          = "./generated/client"
 }
 
 datasource db {
@@ -26,7 +25,7 @@ enum SocialPlatform {
 }
 
 enum GlobalRole {
-  ORGANIZER
+  ORGANISER
   ADMIN
 }
 
@@ -46,9 +45,9 @@ model Association {
   updatedAt    DateTime @updatedAt
 
   // relations
-  socialLinks SocialLink[] // 1 ──╮
-  articles    Article[] // 1 ──╯
-  organizer   Organizer? // 1 ⇄ 1 (back-reference)
+  socialLinks SocialLink[]
+  articles    Article[]
+  organisers  Organiser[] // 1-to-many per ERD
 }
 
 model SocialLink {
@@ -65,8 +64,8 @@ model Article {
   id            Int         @id @default(autoincrement())
   slug          String      @unique
   title         String
-  bodyMd        String
-  bodyHtml      String?
+  bodyJson      Json // ProseMirror / Tiptap doc
+  yjsState      Bytes? // snapshot for real-time collab
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   associationId String
@@ -75,24 +74,29 @@ model Article {
   @@index([associationId])
 }
 
-model Organizer {
-  id            String         @id @default(uuid())
-  email         String         @unique
-  passwordHash  String
-  role          GlobalRole     @default(ORGANIZER)
-  createdAt     DateTime       @default(now())
-  associationId String         @unique // enforces 1-to-1
-  association   Association    @relation(fields: [associationId], references: [id])
-  tokens        RefreshToken[]
+model Organiser {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  role         GlobalRole @default(ORGANISER)
+  createdAt    DateTime   @default(now())
+
+  associationId String
+  association   Association @relation(fields: [associationId], references: [id])
+
+  tokens RefreshToken[]
+
+  @@index([associationId])
+  @@map("Organiser") // keep existing table name
 }
 
 model RefreshToken {
   id          Int       @id @default(autoincrement())
   tokenHash   String    @unique
-  organizerId String
-  organizer   Organizer @relation(fields: [organizerId], references: [id])
+  organiserId String    @map("organiserId") // preserve old column name
+  organiser   Organiser @relation(fields: [organiserId], references: [id])
   expiresAt   DateTime
   revoked     Boolean   @default(false)
 
-  @@index([organizerId])
+  @@index([organiserId])
 }
