@@ -1,12 +1,14 @@
 import { prisma } from "../prisma/prisma.js";
 import { hashPassword } from "../utils/auth.js";
-import { isValidEmail, isStrongPassword } from "../utils/validation.js";
+import {
+  isStrongPassword,
+  isValidEmail,
+  isValidRole,
+} from "../utils/validation.js";
 
 /* ------------- helpers ------------- */
 const notFound = (res) =>
   res.status(404).json({ message: "Organiser not found" });
-
-const ALLOWED_ROLES = ["ADMIN", "ORGANISER"];
 
 /* -------------------------------------------------------------
  * GET /api/v1/organisers
@@ -58,7 +60,7 @@ export const createOrganiser = async (req, res, next) => {
     }
 
     // Validate role value
-    if (!ALLOWED_ROLES.includes(role)) {
+    if (!isValidRole(role)) {
       return res.status(400).json({ message: "Invalid role value" });
     }
 
@@ -156,7 +158,7 @@ export const updateOrganiser = async (req, res, next) => {
 
     // Role updates
     if (role !== undefined) {
-      if (!ALLOWED_ROLES.includes(role)) {
+      if (!isValidRole(role)) {
         return res.status(400).json({ message: "Invalid role value" });
       }
       data.role = role;
